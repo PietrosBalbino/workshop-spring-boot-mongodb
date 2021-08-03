@@ -33,8 +33,26 @@ public class UserService {
         findById(id);
         repo.deleteById(id);
     }
+//      vai receber um objeto e o id separados --eu criei--
+//    public User update(String id, User user) {
+//        User entity = findById(id);
+//        updateData(entity, user);
+//        return repo.save(entity);
+//    }
+
+    // aula
+    public User update(User obj) {
+        User newObj = findById(obj.getId());
+        updateData(newObj, obj);
+        return repo.save(newObj);
+    }
 
     public User fromDTO(UserDTO objDTO) {
         return new User(objDTO.getId(), objDTO.getName(), objDTO.getEmail());
+    }
+
+    private void updateData(User entity, User user) {
+        entity.setName(user.getName());
+        entity.setEmail(user.getEmail());
     }
 }

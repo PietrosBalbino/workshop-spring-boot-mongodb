@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,5 +37,17 @@ public class PostResource {
         return ResponseEntity.ok().body(list);
     }
 
+    @GetMapping(value = "/fullsearch")
+    public ResponseEntity<List<Post>> fullSearch(
+            @RequestParam(value = "text", defaultValue = "") String text,
+            @RequestParam(value = "minDate", defaultValue = "") String minDate ,
+            @RequestParam(value = "maxDate", defaultValue = "") String maxDate
+    ) throws UnsupportedEncodingException {
+        text = URL.decodeParam(text);
+        Date min = URL.converDate(minDate, new Date(0L));
+        Date max = URL.converDate(maxDate, new Date());
+        List<Post> list = service.fullSearch(text, min, max);
+        return ResponseEntity.ok().body(list);
+    }
 
 }
